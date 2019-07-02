@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://spring-library:spring-library@cluster0-shard-00-00-saocz.mongodb.net:27017,cluster0-shard-00-01-saocz.mongodb.net:27017,cluster0-shard-00-02-saocz.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority
+      database: spring-library-auth
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+custom:
+  jwtSigningKey: U732rJLVNIU2xKPmDO17wfcNjwUnX9cW
