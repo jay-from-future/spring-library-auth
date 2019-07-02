@@ -1,27 +1,52 @@
 package ru.otus.springlibrary.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
-@NoArgsConstructor
+@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private String username;
+    private User user;
 
-    private String password;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(r -> authorities.add(r::getName));
+        return authorities;
+    }
 
-    private boolean enabled;
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
 
-    private boolean accountNonExpired;
+    @Override
+    public String getUsername() {
+        return user.getUsername();
+    }
 
-    private boolean accountNonLocked;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    private boolean credentialsNonExpired;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-    private Collection<? extends GrantedAuthority> authorities;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

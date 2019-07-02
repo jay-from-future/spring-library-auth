@@ -8,3 +8,5 @@ logging:
     org:
       springframework:
         security: trace
+custom:
+  jwtSigningKey: U732rJLVNIU2xKPmDO17wfcNjwUnX9cW

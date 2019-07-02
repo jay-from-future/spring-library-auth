@@ -1,6 +1,6 @@
 package ru.otus.springlibrary.configuration;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -25,7 +25,6 @@ import ru.otus.springlibrary.repository.OauthClientDetailsRepository;
 @Configuration
 @EnableAuthorizationServer
 @Import(ServerWebSecurityConfiguration.class)
-@AllArgsConstructor
 public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     private AuthenticationManager authenticationManager;
@@ -33,6 +32,17 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
     private UserDetailsService userDetailsService;
 
     private OauthClientDetailsRepository oauthClientDetailsRepository;
+
+    @Value("${custom.jwtSigningKey}")
+    private String jwtSigningKey;
+
+    public OAuth2AuthorizationServerConfiguration(AuthenticationManager authenticationManager,
+                                                  UserDetailsService userDetailsService,
+                                                  OauthClientDetailsRepository oauthClientDetailsRepository) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.oauthClientDetailsRepository = oauthClientDetailsRepository;
+    }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -71,7 +81,7 @@ public class OAuth2AuthorizationServerConfiguration extends AuthorizationServerC
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("123"); // todo replace with the key from the configuration file
+        converter.setSigningKey(jwtSigningKey);
         return converter;
     }
 
