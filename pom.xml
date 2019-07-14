@@ -54,10 +54,12 @@
             <version>1.4.199</version>
             <scope>runtime</scope>
         </dependency>
+        <!-- DO NOT UPDATE to higher version until this bug will not be fixed:
+         https://github.com/spring-projects/spring-security-oauth/issues/1620 -->
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
-            <version>2.2.4.RELEASE</version>
+            <version>2.3.4.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

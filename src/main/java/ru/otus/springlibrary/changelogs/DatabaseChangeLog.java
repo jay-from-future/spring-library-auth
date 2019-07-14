@@ -6,6 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @ChangeLog
 public class DatabaseChangeLog {
@@ -29,12 +30,21 @@ public class DatabaseChangeLog {
 
         db.getCollection("oauth_client_details").insertOne(clientDetailsDocument);
 
-        Document user = new Document()
+        Document admin = new Document()
                 .append("username", "admin")
-                .append("password", "$2a$08$qvrzQZ7jJ7oy2p/msL4M0.l83Cd0jNsX6AJUitbgRXGzge4j035ha")
+                // password is 'admin'
+                .append("password", "$2a$04$Fx9v2ZGKGFCRFWdoSI.yReL/ImkTjQWFMeiZUECPMGQhvyYaZ0cHm")
                 .append("enabled", true)
-                .append("roles", Arrays.asList(new Document().append("name", "ADMIN"), new Document().append("name", "USER")));
+                .append("roles", Arrays.asList(new Document().append("name", "ROLE_ADMIN"),
+                        new Document().append("name", "ROLE_USER")));
 
-        db.getCollection("users").insertOne(user);
+        Document user = new Document()
+                .append("username", "user")
+                // password is 'password'
+                .append("password", "$2a$04$HMby.2tPbO0PNewU4oBXme7BJexhjrOkFGa43xvsOUSlFI01kM4Ki")
+                .append("enabled", true)
+                .append("roles", Collections.singletonList(new Document().append("name", "ROLE_USER")));
+
+        db.getCollection("users").insertMany(Arrays.asList(admin, user));
     }
 }
